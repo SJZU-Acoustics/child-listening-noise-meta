@@ -1,0 +1,26 @@
+report_id,study_id,bibkey
+R01,"Visentin et al.,2023",visentin2023
+R02,"Holt et al.,2020",holt2020
+R03,"Hicks & Tharpe,2002",hicks2002
+R05,"Prodi et al.,2019b",prodi2019
+R09,"Oosthuizen et al.,2021",oosthuizen2021
+R10,"Hsu et al.,2017",hsu2017
+R11,"Von Lochow et al.,2018",lochow2018
+R13,"Prodi et al.,2019a",prodi2019x
+R14,"Oosthuizen et al.,2020",oosthuizen2020
+R19,"Danneels et al.,2021",danneels2021
+R25,"Prodi et al.,2019a",visentin2021
+R28,"Schiller et al.,2020",schiller2020
+R32,"Howard et al.,2010",howard2010
+R35,"McFadden & Pittman,2008",mcfadden2008
+R42,"Nirme et al.,2019",nirme2019
+R51,"Seitz et al.,2024",seitz2024
+R57,"Brännström et al.,2018",brannstrom2018
+R59,"Jamieson et al.,2004",jamieson2004
+R60,"Nelson et al.,2005",nelson2005
+R64,"Spandita & Jain,2024",spandita2024
+R75,"Seitz & Fels,2025",seitz2025
+R79,"Socher et al.,2026",socher2026
+R80,"Sakamoto et al.,2020",sakamoto2020
+R81,"Goupell et al.,2020",goupell2020
+R87,"Stuart,2005",stuart2005

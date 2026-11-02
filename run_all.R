@@ -1,0 +1,25 @@
+required <- c("metafor", "clubSandwich", "wildmeta", "ggplot2", "patchwork", "ggrepel")
+missing <- required[!vapply(required, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing)) stop("Install required R packages: ", paste(missing, collapse = ", "))
+python <- Sys.getenv("PYTHON", unset = Sys.which("python3"))
+if (!nzchar(python)) stop("Python 3 with openpyxl is required; set PYTHON to its executable.")
+if (!file.exists("R/load_data.py")) stop("Run Rscript run_all.R from the repository root.")
+for (d in c(".cache/data", ".cache/logs", "output/figures/si", "output/tables/si", "output/numbers")) dir.create(d, recursive = TRUE, showWarnings = FALSE)
+writeLines(character(), ".cache/input-trace.txt")
+status <- system2(python, c("R/trace_python.py", "R/load_data.py"))
+if (status != 0L) stop("Workbook loading failed.")
+invisible(file.copy("R/corpus_bibkeys.csv", "output/numbers/corpus_bibkeys.csv", overwrite = TRUE))
+Sys.setenv(R_PROFILE_USER = normalizePath("R/trace_inputs.R"))
+Sys.setenv(P26_TRACE_FILE = file.path(getwd(), ".cache", "input-trace.txt"))
+run_r <- function(script) {
+  message(format(Sys.time(), "%H:%M:%S"), "  ", basename(script))
+  log <- file.path(".cache/logs", paste0(basename(script), ".txt"))
+  status <- system2(file.path(R.home("bin"), "Rscript"), shQuote(script), stdout = log, stderr = log)
+  if (status != 0L) { cat(tail(readLines(log), 25), sep = "\n"); stop("Failed: ", script) }
+}
+for (script in sort(list.files("R", pattern = "^analysis_.*\\.R$", full.names = TRUE))) run_r(script)
+status <- system2(python, c("R/trace_python.py", "R/prepare_ohat.py"))
+if (status != 0L) stop("OHAT aggregation failed.")
+for (file in c("tables_main.R", "tables_si.R", "fig1_prisma.R", "fig2_cost.R", "fig3_gradient.R", "fig4_common_cost.R", "fig5_estimability.R", "figs_si.R")) run_r(file.path("R",file))
+writeLines(capture.output(sessionInfo()), "output/sessionInfo.txt")
+message("Complete: main/SI figures, tables and numerical outputs are in output/.")

@@ -1,0 +1,1 @@
+Download `Children_listening_effort_classroom_noise_meta-analysis.xlsx` from [Zenodo](https://doi.org/10.5281/zenodo.23891491) into this folder. Keep the filename unchanged. The workbook is licensed CC BY 4.0; it is excluded from Git to keep the deposited dataset as the single public data source.
