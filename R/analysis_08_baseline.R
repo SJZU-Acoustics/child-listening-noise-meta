@@ -58,10 +58,10 @@ cat(sprintf("control SD: median %.2f, IQR %.2f-%.2f\n",
             median(dis$ctrl_sd), quantile(dis$ctrl_sd, .25), quantile(dis$ctrl_sd, .75)))
 cat(sprintf("\ncorrelation of control SD with baseline accuracy: r = %+.3f  (Spearman %+.3f)\n",
             cor(dis$ctrl_sd, dis$base), cor(dis$ctrl_sd, dis$base, method = "spearman")))
-cat(sprintf("correlation of |g| with control SD              : r = %+.3f  (Spearman %+.3f)\n",
-            cor(abs(dis$yi_al), dis$ctrl_sd), cor(abs(dis$yi_al), dis$ctrl_sd, method = "spearman")))
-cat(sprintf("correlation of |g| with raw drop                : r = %+.3f  (Spearman %+.3f)\n",
-            cor(abs(dis$yi_al), dis$raw_drop), cor(abs(dis$yi_al), dis$raw_drop, method = "spearman")))
+cat(sprintf("correlation of g with control SD               : r = %+.3f  (Spearman %+.3f)\n",
+            cor(dis$yi_al, dis$ctrl_sd), cor(dis$yi_al, dis$ctrl_sd, method = "spearman")))
+cat(sprintf("correlation of g with raw drop                 : r = %+.3f  (Spearman %+.3f)\n",
+            cor(dis$yi_al, dis$raw_drop), cor(dis$yi_al, dis$raw_drop, method = "spearman")))
 
 cat("\n  Formal test: does g depend on control SD once the raw drop is held fixed?\n")
 dis$sd_c   <- dis$ctrl_sd - mean(dis$ctrl_sd)

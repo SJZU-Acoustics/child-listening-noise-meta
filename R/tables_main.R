@@ -117,7 +117,7 @@ t2row <- function(famname, label) {
 con <- file(file.path(TDIR, "table2_pooled.tex"), "w")
 writeLines(c(
   "\\begin{table}[tbp]",
-  "\\caption{Pooled adverse effects of noise relative to quiet controls. IS is task accuracy, RT response time and PE perceived effort. Positive $g$ indicates an adverse effect. Estimates and 95\\% CIs use three-level shared-arm models with study-clustered CR2 inference. The $q$ values are corrected across ALL, IS, RT and PE. PIs are standardised 95\\% prediction intervals for a new condition in a new study. Raw changes are percentage points (pp) or milliseconds (ms). Here $m$ counts studies, $k$ effects and $N$ the largest analysed group per study summed across studies, and $I^2$ includes both heterogeneity levels.}",
+  "\\caption{Pooled adverse effects of noise relative to quiet controls. IS is task accuracy, RT response time and PE perceived effort. Positive $g$ indicates an adverse effect. Estimates come from three-level shared-arm models. The 95\\% CIs are model-based, and the $q$ values come from study-clustered CR2 tests corrected across ALL, IS, RT and PE. PIs are standardised 95\\% prediction intervals for a new condition in a new study. Raw changes are percentage points (pp) or milliseconds (ms). Here $m$ counts studies, $k$ effects and $N$ the largest analysed group for that outcome in each study, summed across studies, and $I^2$ includes both heterogeneity levels.}",
   "\\label{tab:pooled}",
   "\\footnotesize",
   "\\setlength{\\tabcolsep}{2.5pt}",

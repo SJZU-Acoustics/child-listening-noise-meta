@@ -9,7 +9,7 @@ conc <- read.csv(OUTC("analysis_19_reuse_effort", "IS_PE_concordance.csv"))
 
 quad <- c(both = sum(pairs$g_IS > 0 & pairs$g_RT > 0),
           acc = sum(pairs$g_IS > 0 & pairs$g_RT <= 0),
-          speed = sum(pairs$g_IS <= 0 & pairs$g_RT > 0),
+          rt = sum(pairs$g_IS <= 0 & pairs$g_RT > 0),
           neither = sum(pairs$g_IS <= 0 & pairs$g_RT <= 0))
 lims_a <- list(x = range(pairs$g_IS) + c(-0.25, 0.35),
                y = range(pairs$g_RT) + c(-0.25, 0.35))
@@ -32,18 +32,22 @@ pa <- ggplot(pairs, aes(g_IS, g_RT)) +
            label = sprintf("both adverse: %d of %d", quad[["both"]], nrow(pairs))) +
   annotate("text", x = lims_a$x[2] - 0.05, y = lims_a$y[1] + 0.12,
            hjust = 1, size = 2.9, family = "Helvetica",
-           label = sprintf("accuracy only: %d", quad[["acc"]])) +
-  annotate("text", x = lims_a$x[1] + 0.05, y = lims_a$y[2] - 0.02,
+           label = sprintf("ACC only: %d", quad[["acc"]])) +
+  annotate("label", x = lims_a$x[1] + 0.05, y = lims_a$y[2] - 0.02,
            hjust = 0, vjust = 1, size = 2.9, family = "Helvetica",
-           label = sprintf("speed only: %d", quad[["speed"]])) +
-  annotate("text", x = lims_a$x[1] + 0.05, y = lims_a$y[1] + 0.12,
+           fill = "white", border.colour = NA, label.padding = unit(0.08, "lines"),
+           label = sprintf("RT only: %d", quad[["rt"]])) +
+  annotate("label", x = lims_a$x[1] + 0.05, y = lims_a$y[1] + 0.12,
            hjust = 0, size = 2.9, family = "Helvetica",
+           fill = "white", border.colour = NA, label.padding = unit(0.08, "lines"),
            label = sprintf("neither: %d", quad[["neither"]])) +
-  annotate("text", x = 0.35, y = 2.35, hjust = 0, size = 2.9,
+  annotate("text", x = lims_a$x[2] - 0.05, y = 0.85, hjust = 1, size = 2.9,
            family = "Helvetica", parse = TRUE,
            label = sprintf("italic(r)*' = +%.2f [%.2f, %.2f]'",
                            corr$pearson, corr$boot_lo, corr$boot_hi)) +
   coord_cartesian(xlim = lims_a$x, ylim = lims_a$y, expand = FALSE) +
+  scale_x_continuous(labels = minus_labels) +
+  scale_y_continuous(labels = minus_labels) +
   labs(x = expression("ACC effect (Hedges' "*italic(g)*")"),
        y = expression("RT effect (Hedges' "*italic(g)*")")) +
   theme_pub(base_size = 8, axis_title_size = 9) +

@@ -35,3 +35,10 @@ save_fig <- function(p, file, width_mode, height_in) {
 }
 
 pub_label <- function(x) gsub("\\bIS\\b", "ACC", x, perl = TRUE)
+
+# Negative tick labels take the minus sign (U+2212), never a hyphen.
+minus_labels <- function(x) {
+  out <- format(x, trim = TRUE, justify = "left")
+  out[is.na(x)] <- NA
+  gsub("-", "−", out, fixed = TRUE)
+}

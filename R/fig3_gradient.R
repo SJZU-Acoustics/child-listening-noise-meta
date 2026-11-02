@@ -32,8 +32,10 @@ traj_panel <- function(fam) {
              label = sprintf("%s (%d %s)", pub_label(fam), ns,
                              ifelse(ns == 1, "study", "studies")),
              size = 2.9, family = "Helvetica") +
-    scale_x_continuous(limits = c(min(vary$SNR), max(vary$SNR) + 3)) +
-    scale_y_continuous(limits = range(vary$yi_al) + c(-0.15, 0.15)) +
+    scale_x_continuous(limits = c(min(vary$SNR), max(vary$SNR) + 3),
+                       labels = minus_labels) +
+    scale_y_continuous(limits = range(vary$yi_al) + c(-0.15, 0.15),
+                       labels = minus_labels) +
     labs(x = "SNR (dB)", y = expression("Effect size (Hedges' "*italic(g)*")")) +
     theme_pub(base_size = 8, axis_title_size = 9) + theme(legend.position = "none")
 }
@@ -61,6 +63,7 @@ pd <- ggplot(dec, aes(x = estimate, y = family, colour = component,
   scale_shape_manual(values = c("Within-study slope" = 16,
                                 "Between-study slope" = 1)) +
   scale_y_discrete(limits = rev(levels(dec$family)), labels = pub_label) +
+  scale_x_continuous(labels = minus_labels) +
   labs(x = expression("SNR slope ("*italic(g)*" per dB)"), y = NULL) +
   theme_pub(base_size = 8, axis_title_size = 9) +
   theme(legend.position = "inside",

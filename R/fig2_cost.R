@@ -54,6 +54,7 @@ forest_panel <- function(df, pooled, pi, xlab, col, digits = 1) {
                aes(x = est), shape = 15, size = 1.5, colour = col) +
     geom_point(data = rows[rows$kind == "pool", ],
                aes(x = est), shape = 18, size = 3.1, colour = col) +
+    scale_x_continuous(labels = minus_labels) +
     labs(x = xlab, y = NULL) +
     theme_pub(base_size = 8, axis_title_size = 9) +
     theme(axis.line.y = element_blank(), axis.ticks.y = element_blank())

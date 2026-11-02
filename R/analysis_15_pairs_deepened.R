@@ -75,14 +75,21 @@ cat(sprintf("cluster bootstrap (resampling %d studies, %d draws): median %+.3f, 
 
 cat("\n=== 4. does the dissociation depend on task difficulty (IS baseline)? ===\n")
 cat("IS baseline = quiet-condition accuracy of the pair's IS side (percent)\n")
-p$base_between <- ave(p$IS_m2, p$study, FUN = mean)
-p$base_within  <- p$IS_m2 - p$base_between
-p$base_between_c <- p$base_between - mean(p$base_between)
+src <- read.csv(file.path(P26_ROOT, ".cache", "data", "source_rows.csv"),
+                stringsAsFactors = FALSE)
+ctrl_unit <- setNames(src$unit, src$source_id)[
+  D$effects$control_group_id[match(p$effect_ID_IS, D$effects$effect_ID)]]
+pb <- p[ctrl_unit != "RAU", ]
+cat(sprintf("pairs with RAU baselines excluded: %d; baseline model on %d pairs, %d studies\n",
+            sum(ctrl_unit == "RAU"), nrow(pb), length(unique(pb$study))))
+pb$base_between <- ave(pb$IS_m2, pb$study, FUN = mean)
+pb$base_within  <- pb$IS_m2 - pb$base_between
+pb$base_between_c <- pb$base_between - mean(pb$base_between)
 cat(sprintf("IS baseline: median %.1f%%, range %.1f-%.1f\n",
-            median(p$IS_m2), min(p$IS_m2), max(p$IS_m2)))
+            median(pb$IS_m2), min(pb$IS_m2), max(pb$IS_m2)))
 m_base <- rma.mv(diff ~ base_within + base_between_c, v_diff,
                  random = list(~ 1 | study, ~ 1 | pair_ID),
-                 data = p, method = "REML", test = "t")
+                 data = pb, method = "REML", test = "t")
 print(data.frame(term = rownames(m_base$b), est = as.numeric(m_base$b),
                  p_model = m_base$pval), row.names = FALSE, digits = 4)
 cwb_base <- rep(NA_real_, 3)

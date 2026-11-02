@@ -64,14 +64,20 @@ for (nm in c("IS", "RT", "PE")) {
 cat("  BH across the three-family RQ1 screen (CR2 p): ",
     paste(sprintf("%s q=%.4f", names(snr_p), p.adjust(snr_p, "BH")), collapse = " | "), "\n")
 
-cat("\n=== 3. moderators (audited form: SNR_c * age_c + Outcome_Type + masking) ===\n")
-f <- p26_fit(~ SNR_c * age_c + Outcome_Type + masking, d); rb <- p26_robust(f)
+cat("\n=== 3. moderators (audited form: SNR_c * age_c + Outcome_Type + masking;",
+    "adopted shared-arm V) ===\n")
+V_mod <- vcalc(vi = vi, cluster = study, grp1 = experiment_group_id,
+               grp2 = control_group_id, w1 = n1, w2 = n2, data = d, sparse = FALSE)
+f <- rma.mv(yi_al, V_mod, mods = ~ SNR_c * age_c + Outcome_Type + masking, data = d,
+            random = list(~ 1 | study, ~ 1 | effect_ID),
+            method = "REML", test = "t", dfs = "contain")
+rb <- p26_robust(f)
 rownames(rb) <- rownames(f$b)
 for (term in c("SNR_c:age_c", "age_c", "maskingIM", "Outcome_TypeRT", "Outcome_TypePE")) {
   i <- which(rownames(f$b) == term)
   cat(sprintf("%-16s %+.5f  p_model %.4g | CR2 p %.4g (df %.1f)\n",
               term, f$b[i], f$pval[i], rb$p_CR2[i], rb$df_CR2[i]))
-  add(term, f$b[i], f$ci.lb[i], f$ci.ub[i], f$pval[i], rb$p_CR2[i], "full moderator model")
+  add(term, f$b[i], f$ci.lb[i], f$ci.ub[i], f$pval[i], rb$p_CR2[i], "full moderator model, shared-arm V")
 }
 dis <- p26_disagree(rb)
 cat(if (is.null(dis)) "  no model/robust disagreement in this model\n" else "")

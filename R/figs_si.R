@@ -20,6 +20,7 @@ fun_panel <- function(fam, col) {
     annotate("text", x = Inf, y = Inf, hjust = 1.05, vjust = 1.4,
              label = sprintf("%s (%d effects)", pub_label(fam), nrow(s)), size = 2.9,
              family = "Helvetica") +
+    scale_x_continuous(labels = minus_labels) +
     labs(x = expression("Effect size "*italic(g)*" (aligned)"),
          y = expression(sqrt(italic(n)))) +
     theme_pub(base_size = 8, axis_title_size = 9)
@@ -83,6 +84,7 @@ spec_panel <- function(qty, show_leg = FALSE, panel_lab = qty) {
                                    expression("constant "*rho*" = 0.5"))) +
     annotate("text", x = 1, y = Inf, hjust = 0, vjust = 2.4, size = 2.7,
              family = "Helvetica", label = pub_label(panel_lab)) +
+    scale_y_continuous(labels = minus_labels) +
     labs(x = "Specification (ranked)",
          y = expression("Estimate ("*italic(g)*")")) +
     theme_pub(base_size = 8, axis_title_size = 9) +
@@ -103,6 +105,7 @@ pa <- ggplot(d, aes(SNR, outcome, colour = outcome)) +
   geom_jitter(height = 0.18, size = 1.1, alpha = 0.65) +
   scale_colour_manual(values = FAM_COL[c("IS", "RT", "PE")]) +
   scale_y_discrete(limits = c("PE", "RT", "IS"), labels = pub_label) +
+  scale_x_continuous(labels = minus_labels) +
   labs(x = "SNR (dB)", y = NULL) +
   theme_pub(base_size = 8, axis_title_size = 9) +
   theme(legend.position = "none")
@@ -110,7 +113,7 @@ pb <- ggplot(d, aes(age, outcome, colour = outcome)) +
   geom_jitter(height = 0.18, size = 1.1, alpha = 0.65) +
   scale_colour_manual(values = FAM_COL[c("IS", "RT", "PE")]) +
   scale_y_discrete(limits = c("PE", "RT", "IS"), labels = pub_label) +
-  labs(x = "Mean age of group (y)", y = NULL) +
+  labs(x = "Group age (y)", y = NULL) +
   theme_pub(base_size = 8, axis_title_size = 9) +
   theme(legend.position = "none")
 p <- pa | pb
