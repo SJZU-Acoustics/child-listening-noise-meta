@@ -48,8 +48,8 @@ n_reports <- nrow(read.csv(file.path(".cache", "data", "corpus_25_reports.csv"))
 con <- file(file.path(TDIR, "table1_characteristics.tex"), "w")
 writeLines(c(
   "\\begin{sidewaystable}[tbp]",
-  sprintf("\\caption{Characteristics of the %d included studies (%d reports). $n$ is the largest analysed group, and $k$ is the number of extracted effect sizes (%d in total). SNR gives the experimental signal-to-noise ratio range, with the number of distinct levels in parentheses. Masking class is energetic (EM) or informational (IM), and EM/IM denotes conditions in both classes. SSN is speech-shaped noise and class denotes classroom noise. The final column gives the proportion of applicable OHAT risk-of-bias items rated low risk.}",
-          nrow(t1), n_reports, nrow(d)),
+  sprintf("\\caption{Characteristics of the %d included studies (%d reports).}",
+          nrow(t1), n_reports),
   "\\label{tab:characteristics}",
   "\\footnotesize",
   "\\centering",
@@ -64,7 +64,10 @@ for (i in seq_len(nrow(t1))) {
                      lab, r$cite, r$n, r$age, num(r$snr), r$noise, r$masking,
                      r$outcomes, r$k, r$lowrisk), con)
 }
-writeLines(c("\\bottomrule", "\\end{tabular}", "\\end{sidewaystable}"), con)
+writeLines(c("\\bottomrule", "\\end{tabular}",
+  sprintf("\\par\\vspace{3pt}\\parbox{0.86\\linewidth}{\\raggedright Note. $n$ is the largest analysed group, Age is the mean or estimated age of the group, with a range where the groups of a study differed, and $k$ is the number of extracted effect sizes (%d in total). SNR gives the experimental signal-to-noise ratio range, with the number of distinct levels in parentheses. Masking class is energetic (EM) or informational (IM), and EM/IM denotes conditions in both classes. SSN is speech-shaped noise and class denotes classroom noise. The final column gives the proportion of applicable OHAT risk-of-bias items rated low risk.}",
+          nrow(d)),
+  "\\end{sidewaystable}"), con)
 close(con)
 
 pis <- read.csv(OUTC("analysis_05_heterogeneity", "prediction_intervals.csv"))
@@ -117,7 +120,7 @@ t2row <- function(famname, label) {
 con <- file(file.path(TDIR, "table2_pooled.tex"), "w")
 writeLines(c(
   "\\begin{table}[tbp]",
-  "\\caption{Pooled adverse effects of noise relative to quiet controls. IS is task accuracy, RT response time and PE perceived effort. Positive $g$ indicates an adverse effect. Estimates come from three-level shared-arm models. The 95\\% CIs are model-based, and the $q$ values come from study-clustered CR2 tests corrected across ALL, IS, RT and PE. PIs are standardised 95\\% prediction intervals for a new condition in a new study. Raw changes are percentage points (pp) or milliseconds (ms). Here $m$ counts studies, $k$ effects and $N$ the largest analysed group for that outcome in each study, summed across studies, and $I^2$ includes both heterogeneity levels.}",
+  "\\caption{Pooled adverse effects of noise relative to quiet controls.}",
   "\\label{tab:pooled}",
   "\\footnotesize",
   "\\setlength{\\tabcolsep}{2.5pt}",
@@ -129,7 +132,9 @@ writeLines(c(
   t2row("IS", "IS"),
   t2row("RT", "RT"),
   t2row("PE", "PE"),
-  "\\bottomrule", "\\end{tabular*}", "\\end{table}"), con)
+  "\\bottomrule", "\\end{tabular*}",
+  "\\par\\vspace{3pt}\\parbox{\\textwidth}{\\raggedright Note. IS is task accuracy, RT response time and PE perceived effort. Positive $g$ indicates an adverse effect. Estimates come from the three-level models with shared control arms, and the raw-scale IS estimate uses only the studies that reported percentage accuracy. The 95\\% CIs are model-based, and the $q$ values come from study-clustered CR2 tests corrected across ALL, IS, RT and PE. PIs are standardised 95\\% prediction intervals for a new condition in a new study. Raw changes are percentage points (pp) or milliseconds (ms). Here $m$ counts studies, $k$ effects and $N$ the largest analysed group for that outcome in each study, summed across studies, and $I^2$ includes both heterogeneity levels.}",
+  "\\end{table}"), con)
 close(con)
 
 pp <- read.csv(OUTC("analysis_17_small_study", "pet_peese.csv"))
@@ -139,8 +144,7 @@ qnb <- fam20$q[fam20$member == "sample size between-study"]
 con <- file(file.path(TDIR, "table3_smallstudy.tex"), "w")
 writeLines(c(
   "\\begin{table}[tbp]",
-  sprintf("\\caption{Small-study effects and PET--PEESE-adjusted estimates. The detection test is sample-size-based Egger regression, equivalent to the PET slope on the $\\sqrt{n}$ precision scale. This avoids the artefactual correlation between a standardised mean difference and its standard error. PET and PEESE columns report PET--PEESE-adjusted pooled estimates with 95\\%% CIs. A between-study sample-size coefficient was negative (%s per participant, $p = %s$), but not significant after correction within the nine-test small-study family ($q = %s$).}",
-          num(fmt(nb$estimate, 3)), fmt(nb$p_CR2, 3), fmt(qnb, 2)),
+  "\\caption{Small-study effects and PET--PEESE-adjusted estimates.}",
   "\\label{tab:smallstudy}",
   "\\footnotesize",
   "\\setlength{\\tabcolsep}{3pt}",
@@ -158,7 +162,10 @@ for (f in c("ALL", "IS", "RT", "PE")) {
     num(fmt(r$peese_adj)), num(fmt(r$peese_adj_lo)), num(fmt(r$peese_adj_hi))),
     con)
 }
-writeLines(c("\\bottomrule", "\\end{tabular*}", "\\end{table}"), con)
+writeLines(c("\\bottomrule", "\\end{tabular*}",
+  sprintf("\\par\\vspace{3pt}\\parbox{\\textwidth}{\\raggedright Note. The detection test is sample-size-based Egger regression, equivalent to the PET slope on the $\\sqrt{n}$ precision scale. This avoids the artefactual correlation between a standardised mean difference and its standard error. PET and PEESE columns report PET--PEESE-adjusted pooled estimates with 95\\%% CIs. A between-study sample-size coefficient was negative (%s per participant, $p = %s$), but not significant after correction across the nine small-study tests listed in Supplementary Table~S3 ($q = %s$).}",
+          num(fmt(nb$estimate, 3)), fmt(nb$p_CR2, 3), fmt(qnb, 2)),
+  "\\end{table}"), con)
 close(con)
 
 wb04 <- read.csv(OUTC("analysis_04_snr_information", "within_between_decomposition.csv"))

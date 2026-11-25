@@ -1,6 +1,6 @@
 # Classroom noise and listening outcomes in children
 
-Code for data analysis for the paper **Effects of classroom-relevant noise on task accuracy, response time, and perceived effort in school-aged children: A three-level meta-analysis**, by Yunting Cui, Xinhao Yang, Yang Liu and Yuan Zhang.
+Code for data analysis for the paper **Classroom noise exposure and school-aged children's task accuracy, response time and perceived effort in a three-level meta-analysis**, by Yunting Cui, Xinhao Yang, Yang Liu and Yuan Zhang.
 
 ## Requirements
 

@@ -75,5 +75,5 @@ p <- ggplot() +
   theme_void(base_family = "Helvetica")
 
 save_fig(p, file.path("output", "figures", "fig1_prisma.png"),
-         "double_column", 4.8)
+         "double_column", 4.8, dpi = 1200)
 cat("fig1 written\n")

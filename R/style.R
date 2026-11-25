@@ -29,9 +29,12 @@ theme_pub <- function(base_size = 9, axis_title_size = 10) {
     )
 }
 
-save_fig <- function(p, file, width_mode, height_in) {
+# Line art (black-and-white diagrams) is exported at 1200 dpi so that it meets
+# journals' 1000-dpi line-art requirement at any placed width; other figures
+# keep the 600-dpi default.
+save_fig <- function(p, file, width_mode, height_in, dpi = 600) {
   ggsave(file, p, width = mm2in(WIDTH_MM[[width_mode]]), height = height_in,
-         dpi = 600, bg = "white")
+         dpi = dpi, bg = "white")
 }
 
 pub_label <- function(x) gsub("\\bIS\\b", "ACC", x, perl = TRUE)
